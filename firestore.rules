@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users profile and account details
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+
+    // Exam generations history
+    match /generations/{generationId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+
+    // Payment transactions (Paynow)
+    match /transactions/{transactionId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+
+    // System stats / configurations
+    match /systemStats/{statId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+  }
+}

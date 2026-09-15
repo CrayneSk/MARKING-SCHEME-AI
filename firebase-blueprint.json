@@ -1,0 +1,36 @@
+{
+  "entities": {
+    "users": {
+      "fields": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string" },
+        "plan": { "type": "string" },
+        "generationsUsed": { "type": "number" },
+        "freeGenerationsLimit": { "type": "number" },
+        "subscriptionExpiry": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "lastActiveAt": { "type": "string" }
+      }
+    },
+    "generations": {
+      "fields": {
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "subject": { "type": "string" },
+        "level": { "type": "string" },
+        "paperNumber": { "type": "string" },
+        "totalMarks": { "type": "string" },
+        "markingScheme": { "type": "string" },
+        "originalExamText": { "type": "string" },
+        "planAtGeneration": { "type": "string" },
+        "attribution": { "type": "string" },
+        "createdAt": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "indexes": []
+  }
+}

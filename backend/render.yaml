@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: marking-scheme-generator-backend
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: GEMINI_API_KEY
+        value: AIzaSyB7kOwOp2hbSSPKG4Vq6sJIKWl1xWWf_Hs
+      - key: NODE_ENV
+        value: production

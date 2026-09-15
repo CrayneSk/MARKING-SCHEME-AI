@@ -1,0 +1,16 @@
+{
+  "name": "marking-scheme-generator-backend",
+  "version": "1.0.0",
+  "description": "Ultra-fast Examination Marking Scheme Generator Backend for Render",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "@google/genai": "^2.4.0",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2"
+  }
+}

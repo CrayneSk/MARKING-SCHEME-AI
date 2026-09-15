@@ -1,0 +1,7 @@
+{
+  "name": "Marking Scheme Generator",
+  "description": "Official Examination Marking Scheme & Assessment Guide Generator. Fast, high-accuracy marking criteria, teacher tiers, and EcoCash WhatsApp verification.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
