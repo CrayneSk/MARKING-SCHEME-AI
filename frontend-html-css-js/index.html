@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>National Examination Marking Scheme Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="logo-icon">MS</div>
+        <div class="logo-text">
+          <h1>Marking Scheme Generator</h1>
+          <p>Ultra-fast National Assessment Engine (Render & Firebase)</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <span id="backend-status" class="badge badge-gold">Connecting...</span>
+        <button id="btn-pricing" class="btn btn-sm btn-gold">Upgrade / EcoCash</button>
+        <div id="auth-status-area">
+          <button id="btn-open-auth" class="btn btn-sm btn-primary">Sign In</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Workspace Layout -->
+  <main class="main-layout">
+
+    <!-- Left Column: Examination Setup -->
+    <section class="card exam-form-card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span>Exam Configuration</span>
+        </h2>
+        <button id="btn-load-sample" class="btn-sm btn-outline">Load Sample Exam</button>
+      </div>
+
+      <!-- Render Backend Config Row -->
+      <div class="render-config-banner">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <label for="backend-url-input" style="font-weight: 600; color: #93c5fd;">Render Backend API URL</label>
+          <span style="font-size: 0.72rem; color: #94a3b8;">Saves in browser</span>
+        </div>
+        <div class="render-config-row">
+          <input 
+            type="text" 
+            id="backend-url-input" 
+            placeholder="https://your-backend.onrender.com"
+          />
+          <button id="btn-save-backend" class="btn-sm btn-secondary">Connect</button>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="exam-level">Curriculum / Level</label>
+          <select id="exam-level">
+            <option value="O-Level (Form 3 - 4)">O-Level (Form 3 - 4)</option>
+            <option value="A-Level (Form 5 - 6)">A-Level (Form 5 - 6)</option>
+            <option value="Primary (Grade 6 - 7)">Primary (Grade 6 - 7)</option>
+            <option value="Tertiary / College">Tertiary / College</option>
+            <option value="Cambridge IGCSE">Cambridge IGCSE</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="subject-select">Subject</label>
+          <select id="subject-select">
+            <option value="Combined Science">Combined Science</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="English Language">English Language</option>
+            <option value="Biology">Biology</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Physics">Physics</option>
+            <option value="Geography">Geography</option>
+            <option value="History">History</option>
+            <option value="Commerce">Commerce</option>
+            <option value="Principles of Accounting">Principles of Accounting</option>
+            <option value="Heritage Studies">Heritage Studies</option>
+            <option value="Agriculture">Agriculture</option>
+            <option value="Computer Science">Computer Science</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="paper-number">Paper Specification</label>
+          <input type="text" id="paper-number" value="Paper 2 (Theory & Structured)" />
+        </div>
+
+        <div class="form-group">
+          <label for="total-marks">Total Target Marks</label>
+          <input type="number" id="total-marks" value="100" />
+        </div>
+
+        <div class="form-group">
+          <label for="exam-session">Exam Session / Year</label>
+          <input type="text" id="exam-session" value="November Session" />
+        </div>
+
+        <div class="form-group">
+          <label for="instructions">Examiner Instructions (Optional)</label>
+          <input type="text" id="instructions" placeholder="e.g. Strict mark allocations, bold answers" />
+        </div>
+
+        <div class="form-group full-width">
+          <label>Attach Exam Document (PDF or TXT)</label>
+          <div class="file-upload-zone" id="file-drop-zone">
+            <input type="file" id="file-input" accept=".pdf,.txt,.doc,.docx" style="display: none;" />
+            <p style="font-size: 0.9rem; color: #cbd5e1; font-weight: 500;">
+              Click to browse or drop your exam paper here
+            </p>
+            <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.25rem;">
+              Supports PDF and plain text documents
+            </p>
+            <div id="file-name-display" style="display: none; margin-top: 0.5rem; font-size: 0.8rem; color: #60a5fa; font-weight: bold;"></div>
+          </div>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="exam-questions">Paste Exam Questions</label>
+          <textarea 
+            id="exam-questions" 
+            placeholder="Type or paste questions here... Example:
+Question 1
+(a) State four functions of leaves in a plant. (4 marks)
+(b) Describe the process of osmosis. (2 marks)"
+          ></textarea>
+        </div>
+      </div>
+
+      <button id="btn-generate" class="btn btn-primary" style="width: 100%; margin-top: auto;">
+        <span id="btn-spinner" class="spinner" style="display: none;"></span>
+        <span id="btn-text">Generate Official Marking Scheme</span>
+      </button>
+    </section>
+
+    <!-- Right Column: Formatted Output & Export -->
+    <section class="card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span>Official Marking Scheme</span>
+          <span class="badge badge-gold" style="font-size: 0.7rem;">Letters & Numbers Only</span>
+        </h2>
+
+        <!-- Action Toolbar -->
+        <div id="action-toolbar" style="display: none; gap: 0.4rem; flex-wrap: wrap;">
+          <button id="btn-copy" class="btn-sm btn-secondary">Copy</button>
+          <button id="btn-download-txt" class="btn-sm btn-secondary">TXT</button>
+          <button id="btn-download-doc" class="btn-sm btn-secondary">Word</button>
+          <button id="btn-print" class="btn-sm btn-secondary">Print</button>
+          <button id="btn-save-history" class="btn-sm btn-primary">Save to History</button>
+        </div>
+      </div>
+
+      <!-- Output Viewport -->
+      <div id="output-box" class="output-box">
+        <div class="output-placeholder">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          <p style="font-weight: 600; font-size: 1.05rem; color: #cbd5e1;">Awaiting Exam Paper</p>
+          <p style="font-size: 0.85rem; margin-top: 0.25rem;">
+            Paste questions on the left or click "Load Sample Exam" to evaluate.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="modal-backdrop">
+    <div class="modal-content">
+      <button id="auth-close" class="modal-close">&times;</button>
+      <h3 id="auth-title" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Sign In to Educator Vault</h3>
+      <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.25rem;">
+        Access your saved papers and generated marking schemes from any device.
+      </p>
+
+      <form id="auth-form" style="display: flex; flex-direction: column; gap: 0.85rem;">
+        <div class="form-group">
+          <label for="auth-email">Email Address</label>
+          <input type="email" id="auth-email" required placeholder="educator@school.co.zw" />
+        </div>
+        <div class="form-group">
+          <label for="auth-password">Password</label>
+          <input type="password" id="auth-password" required placeholder="••••••••" />
+        </div>
+
+        <div id="auth-error" style="display: none; color: #f87171; font-size: 0.8rem;"></div>
+
+        <button type="submit" id="auth-submit-btn" class="btn btn-primary" style="margin-top: 0.5rem;">Sign In</button>
+      </form>
+
+      <div style="margin: 1rem 0; text-align: center; position: relative;">
+        <hr style="border-color: #334155;" />
+        <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #111827; padding: 0 0.5rem; font-size: 0.75rem; color: #64748b;">OR</span>
+      </div>
+
+      <button id="btn-google-auth" class="btn btn-outline" style="width: 100%;">
+        Sign In with Google
+      </button>
+
+      <p style="text-align: center; margin-top: 1rem; font-size: 0.82rem;">
+        <a href="#" id="auth-toggle" style="color: #60a5fa; text-decoration: none;">Need an account? Sign Up</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- EcoCash / WhatsApp Pricing Modal -->
+  <div id="pricing-modal" class="modal-backdrop">
+    <div class="modal-content" style="max-width: 520px;">
+      <button id="pricing-close" class="modal-close">&times;</button>
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+        <span class="badge badge-gold">EcoCash & WhatsApp</span>
+        <h3 style="font-size: 1.25rem; font-weight: 700;">Unlimited Educator Access</h3>
+      </div>
+      <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 1.25rem;">
+        Instant marking scheme generation for all O-Level, A-Level, and Cambridge subjects.
+      </p>
+
+      <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;">
+          <span style="font-size: 1.1rem; font-weight: bold; color: #fff;">Teacher Term Pass</span>
+          <span style="font-size: 1.4rem; font-weight: 800; color: #fbbf24;">$5 / Term</span>
+        </div>
+        <p style="font-size: 0.8rem; color: #cbd5e1;">
+          Direct EcoCash payment or USD cash transfer with instant activation.
+        </p>
+
+        <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.82rem; color: #94a3b8;">
+          <p><strong>EcoCash Mobile:</strong> 0788849965</p>
+          <p><strong>Name / Reference:</strong> Exam Scheme + Your Name</p>
+        </div>
+      </div>
+
+      <a 
+        href="https://wa.me/263788849965?text=Hello%20l%20am%20interested%20in%20activating%20the%20Exam%20Marking%20Scheme%20Generator" 
+        target="_blank" 
+        class="btn btn-primary" 
+        style="width: 100%; text-decoration: none; background: #059669;"
+      >
+        Confirm & Activate on WhatsApp (0788849965)
+      </a>
+    </div>
+  </div>
+
+  <!-- JavaScript Module Controller -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
